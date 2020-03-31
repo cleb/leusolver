@@ -298,7 +298,7 @@ namespace LeuSolver
                     X = 1,
                     Y = 1
                 },
-            }, 'K');
+            }, 'K', true);
 
             var pieceL = new Piece(new List<Step>
             {
@@ -327,7 +327,7 @@ namespace LeuSolver
                     X = 2,
                     Y = 1
                 }
-            }, 'L');
+            }, 'L', true);
 
 
 

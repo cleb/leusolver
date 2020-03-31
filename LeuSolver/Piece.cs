@@ -8,16 +8,23 @@ namespace LeuSolver
     {
         IList<Step> _steps;
         private readonly char _identifier;
+        private bool _immutable;
         private Dictionary<Tuple<bool, int, int>, bool> _validPositions;
         public char Identifier => _identifier;
-        public Piece(IList<Step> steps, char identifier)
+        public Piece(IList<Step> steps, char identifier, bool immutable = false)
         {
             _steps = steps;
             _identifier = identifier;
+            _immutable = immutable;
         }
 
         public bool CheckCanPlace(IGrid grid, int x, int y, int xDir, int yDir, bool swap)
         {
+            //no need to rotate symmetric pieces - consider the move impossible
+            if(_immutable && (xDir == -1 || yDir == -1 || swap))
+            {
+                return false;
+            }
             foreach(var step in _steps)
             {
                 var coord = CalculateCoord(step.X, step.Y, x, y, xDir, yDir, swap);
