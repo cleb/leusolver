@@ -9,11 +9,13 @@ namespace LeuSolver
     {
         IList<Piece> _availablePieces;
         IGrid _grid;
+        IOptimizer _optimizer;
         public IGrid Grid => _grid;
-        public State(IList<Piece> availablePieces, IGrid grid)
+        public State(IList<Piece> availablePieces, IGrid grid, IOptimizer optimizer)
         {
             _availablePieces = availablePieces;
             _grid = grid;
+            _optimizer = optimizer;
         }
 
         public State GetWinningState()
@@ -57,20 +59,24 @@ namespace LeuSolver
                 {
                     return this;
                 }
-                var newGrid = new Grid(_grid);
-                piece.Place(newGrid, x, y, xDir, yDir, swap);
+                
+                piece.Place(_grid, x, y, xDir, yDir, swap);
 
-                if (!IsPossibleGrid(newGrid))
+                if (!IsPossibleGrid(_grid) || _optimizer.IsKnownState(_grid))
                 {
+                    piece.Reset(_grid, x, y, xDir, yDir, swap);
                     return null;
                 }
 
-                var candidate = new State(pieces, newGrid);
+                _optimizer.SetKnownState(_grid);
+
+                var candidate = new State(pieces, _grid, _optimizer);
                 var candidateState = candidate.GetWinningState();
                 if (candidateState != null)
                 {
                     return candidateState;
                 }
+                piece.Reset(_grid, x, y, xDir, yDir, swap);
             }
             return null;
         }

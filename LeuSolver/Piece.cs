@@ -38,10 +38,20 @@ namespace LeuSolver
 
         public void Place(IGrid grid, int x, int y, int xDir, int yDir, bool swap)
         {
+            PlaceIdentifier(grid, x, y, xDir, yDir, swap, Identifier);
+        }
+
+        public void Reset(IGrid grid, int x, int y, int xDir, int yDir, bool swap)
+        {
+            PlaceIdentifier(grid, x, y, xDir, yDir, swap, ' ');
+        }
+
+        private void PlaceIdentifier(IGrid grid, int x, int y, int xDir, int yDir, bool swap, char identifier)
+        {
             foreach (var step in _steps)
             {
                 var coord = CalculateCoord(step.X, step.Y, x, y, xDir, yDir, swap);
-                grid.Place(coord.X, coord.Y, Identifier);
+                grid.Place(coord.X, coord.Y, identifier);
             }
         }
 

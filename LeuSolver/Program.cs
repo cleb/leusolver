@@ -351,7 +351,7 @@ namespace LeuSolver
             pieces.Remove(pieceB);
             pieces.Remove(pieceH);
 
-            var state = new State(pieces, grid);
+            var state = new State(pieces, grid, new Optimizer());
             var winningState = state.GetWinningState();
 
             Console.WriteLine("====");
